@@ -1,0 +1,34 @@
+<Window x:Class="DataVault.Client.Screens.VerificationFormDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Результат проверки" Height="360" Width="440" WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}" FontFamily="{StaticResource AppFont}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DataVault.Client;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Процедура проверки" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+            <TextBox x:Name="ProcedureBox" Style="{StaticResource TextBoxStyle}" Margin="0,0,0,12"/>
+            <TextBlock Text="Результат" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+            <TextBox x:Name="ResultBox" Style="{StaticResource TextBoxStyle}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="56" Margin="0,0,0,12"/>
+            <CheckBox x:Name="PassedBox" Content="Проверка пройдена" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+            <TextBlock Text="№ сертификата (опц.)" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+            <TextBox x:Name="CertBox" Style="{StaticResource TextBoxStyle}"/>
+        </StackPanel>
+        <Border Grid.Row="1" Padding="0,16,0,0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Сохранить" Click="Apply_Click" Style="{StaticResource PrimaryButton}" Margin="0,0,12,0"/>
+                <Button Content="Отмена" Click="Cancel_Click" Style="{StaticResource SecondaryButton}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

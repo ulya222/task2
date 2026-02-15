@@ -1,0 +1,167 @@
+@startuml DataVault DB
+
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+hide methods
+
+title DataVault — Схема базы данных
+
+' ========== Роли и пользователи ==========
+class AppRole << (T,#E8F5E9) >> {
+  + Id : int <<PK>>
+  --
+  Name : string
+}
+
+class AppUser << (T,#E8F5E9) >> {
+  + Id : int <<PK>>
+  + RoleId : int <<FK>>
+  --
+  Login : string <<UK>>
+  PasswordHash : string
+  FullName : string
+}
+
+' ========== Поставщики и ресурсы ==========
+class Vendor << (T,#E3F2FD) >> {
+  + Id : int <<PK>>
+  --
+  Name : string
+  ContactInfo : string
+  ReliabilityRating : decimal
+  AvgDeliveryDays : int
+}
+
+class Resource << (T,#E3F2FD) >> {
+  + Id : int <<PK>>
+  VendorId : int <<FK>>
+  --
+  Code : string <<UK>>
+  Name : string
+  ResourceKind : string
+  Manufacturer : string
+  SpecsJson : string
+  UnitOfMeasure : string
+  MinStock : int
+  MaxStock : int
+  ExpiryDate : datetime
+  ImageUrl : string
+}
+
+' ========== Хранилища и остатки ==========
+class Storage << (T,#FFF3E0) >> {
+  + Id : int <<PK>>
+  --
+  Name : string
+  StorageKind : string
+  Capacity : int
+  TempRegime : string
+}
+
+class ResourceBalance << (T,#FFF3E0) >> {
+  + Id : int <<PK>>
+  + ResourceId : int <<FK>>
+  + StorageId : int <<FK>>
+  --
+  Quantity : int
+}
+
+class ResourceTransaction << (T,#FFF3E0) >> {
+  + Id : int <<PK>>
+  ResourceId : int <<FK>>
+  StorageId : int <<FK>>
+  --
+  TransactionType : string
+  Quantity : int
+  CreatedAt : datetime
+  Comment : string
+}
+
+' ========== Категории и состав ==========
+class Category << (T,#F3E5F5) >> {
+  + Id : int <<PK>>
+  --
+  Code : string
+  Name : string
+  Description : string
+}
+
+class CategoryItem << (T,#F3E5F5) >> {
+  + Id : int <<PK>>
+  + CategoryId : int <<FK>>
+  + ResourceId : int <<FK>>
+  --
+  Quantity : int
+}
+
+' ========== Фазы и задачи ==========
+class TaskPhase << (T,#FCE4EC) >> {
+  + Id : int <<PK>>
+  --
+  Name : string
+}
+
+class WorkTask << (T,#FCE4EC) >> {
+  + Id : int <<PK>>
+  CategoryId : int <<FK>>
+  PhaseId : int <<FK>>
+  UserId : int <<FK>>
+  --
+  CreatedAt : datetime
+  PlannedFinishAt : datetime
+  ActualFinishAt : datetime
+  Quantity : int
+  EstimatedMinutes : int
+  UnitCost : decimal
+}
+
+' ========== Проверки и замечания ==========
+class Verification << (T,#E0F7FA) >> {
+  + Id : int <<PK>>
+  + WorkTaskId : int <<FK>>
+  --
+  ProcedureName : string
+  ResultValue : string
+  Passed : bool
+  VerifiedAt : datetime
+  CertificateNumber : string
+}
+
+class Remark << (T,#E0F7FA) >> {
+  + Id : int <<PK>>
+  + WorkTaskId : int <<FK>>
+  --
+  RemarkType : string
+  Description : string
+  RecordedAt : datetime
+}
+
+' ========== Журнал активности ==========
+class ActivityLog << (T,#EFEBE9) >> {
+  + Id : int <<PK>>
+  UserId : int <<FK>>
+  --
+  Action : string
+  Entity : string
+  EntityId : int
+  Details : string
+  CreatedAt : datetime
+}
+
+' ========== Связи ==========
+AppRole "1" -- "0..*" AppUser : RoleId
+Vendor "0..1" -- "0..*" Resource : VendorId
+Resource "1" -- "0..*" ResourceBalance : ResourceId
+Storage "1" -- "0..*" ResourceBalance : StorageId
+Resource "1" -- "0..*" ResourceTransaction : ResourceId
+Storage "1" -- "0..*" ResourceTransaction : StorageId
+Category "1" -- "0..*" CategoryItem : CategoryId
+Resource "1" -- "0..*" CategoryItem : ResourceId
+Category "1" -- "0..*" WorkTask : CategoryId
+TaskPhase "1" -- "0..*" WorkTask : PhaseId
+AppUser "0..1" -- "0..*" WorkTask : UserId
+WorkTask "1" -- "0..*" Verification : WorkTaskId
+WorkTask "1" -- "0..*" Remark : WorkTaskId
+AppUser "0..1" -- "0..*" ActivityLog : UserId
+
+@enduml

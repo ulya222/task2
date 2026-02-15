@@ -1,0 +1,49 @@
+<Window x:Class="DataVault.Client.Screens.CategoryCompositionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Состав категории" Height="500" Width="760" WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}" FontFamily="{StaticResource AppFont}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DataVault.Client;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Категория:" VerticalAlignment="Center" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,6,0"/>
+            <ComboBox x:Name="CategoryCombo" DisplayMemberPath="Name" SelectedValuePath="Id" Width="260" Style="{StaticResource ComboBoxStyle}" SelectionChanged="CategoryCombo_SelectionChanged"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,6,0">
+                <StackPanel>
+                    <TextBlock Text="Доступные ресурсы (двойной клик — добавить)" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                    <ListBox x:Name="ResourcesList" Height="300" Background="{StaticResource SurfaceBrush}" Foreground="{StaticResource TextPrimaryBrush}"
+                             MouseDoubleClick="ResourcesList_MouseDoubleClick"/>
+                </StackPanel>
+            </Border>
+            <TextBlock Grid.Column="1" Text="↔" FontSize="22" VerticalAlignment="Center" Foreground="{StaticResource PrimaryBrush}"/>
+            <Border Grid.Column="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="6,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Состав категории" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                    <ListBox x:Name="ItemsList" Height="300" Background="{StaticResource SurfaceBrush}" Foreground="{StaticResource TextPrimaryBrush}"
+                             MouseDoubleClick="ItemsList_MouseDoubleClick"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Content="Закрыть" Click="Close_Click" Style="{StaticResource SecondaryButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>
